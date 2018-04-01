@@ -7,6 +7,9 @@ var words = [];
 var wordElements = [];
 var hidden = [];
 
+var actualLineElement;
+var actualExerciseLineElement;
+
 bodyElement.onload = function () {
 	console.log("Initializing fdg.js");
 	inputTextElement = document.getElementById("inputtext");
@@ -24,7 +27,6 @@ function splitTextToWords(text) {
 	return text.replace(/\s\s+/g, ' ').match(/[a-zA-Z\u00E0-\u00FC\u00DF]+|\s+|[^\sa-zA-Z\u00E0-\u00FC\u00DF]+/g).filter(w => (w != ' ' && w != '\t'));
 }
 
-var actualLineElement;
 function removeAllChildrenOf(element) {
 	while (element.firstChild) {
 		    element.removeChild(element.firstChild);
@@ -86,7 +88,6 @@ function wordElementOnClick(elementId) {
 	hidden[id] = !wasHidden;
 }
 
-var actualExerciseLineElement;
 function clearExercise() {
 	removeAllChildrenOf(showWordsElement);
 	actualExerciseLineElement = null;
