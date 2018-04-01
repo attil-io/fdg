@@ -1,7 +1,7 @@
 (function () {
 
 var bodyElement = document.getElementsByTagName("body")[0]; 
-var inputTextElement, saveInputElement, chooseWordsElement;
+var inputTextElement, saveInputElement, chooseWordsElement, practiceElement, showWordsElement, missingWordsElement;
 
 var words = [];
 var wordElements = [];
@@ -12,8 +12,12 @@ bodyElement.onload = function () {
 	inputTextElement = document.getElementById("inputtext");
 	saveInputElement = document.getElementById("saveinput");
 	chooseWordsElement = document.getElementById("choosewords");
+	showWordsElement = document.getElementById("showwords");
+	practiceElement = document.getElementById("practice");
+	missingWordsElement = document.getElementById("missingwords");
 
 	saveInputElement.onclick = saveInputOnClick;
+	practiceElement.onclick = practiceElementOnClick;
 }
 
 function splitTextToWords(text) {
@@ -21,10 +25,14 @@ function splitTextToWords(text) {
 }
 
 var actualLineElement;
-function clearChoosableWords() {
-	while (chooseWordsElement.firstChild) {
-		    chooseWordsElement.removeChild(chooseWordsElement.firstChild);
+function removeAllChildrenOf(element) {
+	while (element.firstChild) {
+		    element.removeChild(element.firstChild);
 	}
+}
+
+function clearChoosableWords() {
+	removeAllChildrenOf(chooseWordsElement);
 	actualLineElement = null;
 	words = [];
 	wordElements = [];
@@ -38,11 +46,12 @@ function newLineForChoosableWords() {
 
 function createChoosableWord(id, word) {
 	var wordElement = document.createElement("label");
+	var elementId = "choosable" + id;
 	wordElement.innerHTML = word;
-	wordElement.id = id;
+	wordElement.id = elementId;
 	wordElement.classList.add("choosableWord");
 	wordElement.onclick = function () {
-		wordElementOnClick(id);
+		wordElementOnClick(elementId);
 	}
 	actualLineElement.appendChild(wordElement);
 	wordElements[id] = wordElement;
@@ -64,7 +73,8 @@ function saveInputOnClick() {
 	});
 }
 
-function wordElementOnClick(id) {
+function wordElementOnClick(elementId) {
+	var id = elementId.replace(/^choosable/, "");
 	var wordElement = wordElements[id];
 	var wasHidden = hidden[id];
 	console.log("Clicked id:", id);
@@ -75,5 +85,52 @@ function wordElementOnClick(id) {
 	}
 	hidden[id] = !wasHidden;
 }
+
+var actualExerciseLineElement;
+function clearExercise() {
+	removeAllChildrenOf(showWordsElement);
+	removeAllChildrenOf(missingWordsElement);
+	actualExerciseLineElement = null;
+}
+
+function newLineForExerciseWords() {
+	actualExerciseLineElement = document.createElement("div");
+	showWordsElement.appendChild(actualExerciseLineElement);
+}
+
+function createExerciseWord(id, word) {
+	var wordElement = document.createElement("label");
+	wordElement.innerHTML = word;
+	wordElement.id = "exercise" + id;
+	wordElement.classList.add("exerciseWord");
+	actualExerciseLineElement.appendChild(wordElement);
+}
+
+function createExerciseInput(id, word) {
+	var wordElement = document.createElement("input");
+	wordElement.id = "exercise" + id;
+	wordElement.classList.add("exerciseWord");
+	actualExerciseLineElement.appendChild(wordElement);
+}
+
+function showExercise() {
+	actualExerciseLineElement = null;
+	clearExercise();
+	newLineForExerciseWords();
+	words.forEach(function(word, index) {
+		if ("\n" === word) {
+			newLineForExerciseWords();
+		} else if (hidden[index]){
+			createExerciseInput(index, word);
+		} else {
+			createExerciseWord(index, word);
+		}
+	});
+}
+
+function practiceElementOnClick() {
+	showExercise();
+}
+
 })();
 
