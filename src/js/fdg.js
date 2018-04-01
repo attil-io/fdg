@@ -1,10 +1,11 @@
 (function () {
 
 var bodyElement = document.getElementsByTagName("body")[0]; 
-var inputTextElement, saveInputElement, chooseWordsElement, practiceElement, showWordsElement, missingWordsElement;
+var messageElement, inputTextElement, saveInputElement, chooseWordsElement, practiceElement, showWordsElement, missingWordsElement, inputStepElement, chooseStepElement, practiceStepElement;
 
 var words = [];
 var hidden = [];
+var found = [];
 
 var wordElements = [];
 var missingWordElements = [];
@@ -14,15 +15,50 @@ var actualExerciseLineElement;
 
 bodyElement.onload = function () {
 	console.log("Initializing fdg.js");
+	messageElement = document.getElementById("message");
 	inputTextElement = document.getElementById("inputtext");
 	saveInputElement = document.getElementById("saveinput");
 	chooseWordsElement = document.getElementById("choosewords");
 	showWordsElement = document.getElementById("showwords");
 	practiceElement = document.getElementById("practice");
 	missingWordsElement = document.getElementById("missingwords");
+	inputStepElement = document.getElementById("inputstep");
+	chooseStepElement = document.getElementById("choosestep");
+	practiceStepElement = document.getElementById("practicestep");
 
 	saveInputElement.onclick = saveInputOnClick;
 	practiceElement.onclick = practiceElementOnClick;
+
+	startUp();
+}
+
+function showMessage(msg) {
+	messageElement.innerHTML = msg;	
+}
+
+function hideAllSteps() {
+	inputStepElement.style.display = "none";
+	chooseStepElement.style.display = "none";
+	practiceStepElement.style.display = "none";
+}
+
+function showInputStep() {
+	hideAllSteps();
+	inputStepElement.style.display = "block";
+}
+
+function showChooseStep() {
+	hideAllSteps();
+	chooseStepElement.style.display = "block";
+}
+
+function showPracticeStep() {
+	hideAllSteps();
+	practiceStepElement.style.display = "block";
+}
+
+function startUp() {
+	showInputStep();
 }
 
 function splitTextToWords(text) {
@@ -75,6 +111,7 @@ function saveInputOnClick() {
 			createChoosableWord(index, word);
 		}
 	});
+	showChooseStep();
 }
 
 function wordElementOnClick(elementId) {
@@ -121,6 +158,7 @@ function createExerciseInput(id, word) {
 
 function showExercise() {
 	actualExerciseLineElement = null;
+	found = new Array(words.length).fill(true);
 	clearExercise();
 	newLineForExerciseWords();
 	words.forEach(function(word, index) {
@@ -128,10 +166,12 @@ function showExercise() {
 			newLineForExerciseWords();
 		} else if (hidden[index]){
 			createExerciseInput(index, word);
+			found[index] = false;
 		} else {
 			createExerciseWord(index, word);
 		}
 	});
+	showPracticeStep();
 }
 
 function createMissingWord(id, word) {
@@ -177,14 +217,23 @@ function exerciseInputOnKeyDown(elementId) {
 	} else {
 		notFoundWord(id);
 	}
+	if (checkAllFound()) {
+		showMessage("Well done!");
+	}
 }
 
 function foundWord(id) {
 	missingWordElements[id].classList.add("missingWordFound");
+	found[id] = true;
 }
 
 function notFoundWord(id) {
 	missingWordElements[id].classList.remove("missingWordFound");
+	found[id] = false;
+}
+
+function checkAllFound() {
+	return found.every(v => v);
 }
 })();
 
