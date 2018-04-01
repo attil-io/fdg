@@ -1,8 +1,14 @@
 <html>
 	<head>
 		<title>Fill Da Gaps :) -- by Attilio</title>
-		<script type="text/javascript" 
-		src="https://rawgit.com/attil-io/fdg/master/src/js/fdg.js">
+		<script type="text/javascript">
+			var currentUrl = window.location.href;
+			var isLocal = currentUrl.startsWith("file://");
+			var scriptUrl = isLocal ? "src/js/fdg.js" : "https://rawgit.com/attil-io/fdg/master/src/js/fdg.js";
+			console.log("isLocal = ", isLocal, " scriptUrl = ", scriptUrl);
+			var imported = document.createElement('script');
+			imported.src = scriptUrl;
+			document.head.appendChild(imported);
 		</script>
 	</head>
 	<body>
