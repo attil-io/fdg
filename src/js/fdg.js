@@ -36,6 +36,10 @@ function showMessage(msg) {
 	messageElement.innerHTML = msg;	
 }
 
+function addMessage(msg) {
+	messageElement.innerHTML = messageElement.innerHTML + "<br />" + msg;	
+}
+
 function hideAllSteps() {
 	inputStepElement.style.display = "none";
 	chooseStepElement.style.display = "none";
@@ -266,7 +270,7 @@ function exerciseInputOnKeyDown(elementId) {
 		notFoundWord(id);
 	}
 	if (checkAllFound()) {
-		showMessage("Well done!");
+		addMessage("Well done!");
 	}
 }
 
