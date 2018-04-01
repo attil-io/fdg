@@ -15,4 +15,8 @@
 	font-size: small;
 }
 
+.missingWordFound {
+	color: #bbb;
+	text-decoration: line-through;
+}
 

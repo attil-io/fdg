@@ -110,9 +110,13 @@ function createExerciseWord(id, word) {
 
 function createExerciseInput(id, word) {
 	var wordElement = document.createElement("input");
-	wordElement.id = "exercise" + id;
+	var elementId = "exercise" + id;
+	wordElement.id = elementId;
 	wordElement.classList.add("exerciseWord");
 	actualExerciseLineElement.appendChild(wordElement);
+	wordElement.onkeyup = function() {
+		exerciseInputOnKeyDown(elementId);
+	}
 }
 
 function showExercise() {
@@ -150,7 +154,7 @@ function showMissingWords() {
 	var len = missingWordsElement.children.length;
 	for (var i = 0; i < len * 10; ++i) {
 		for (var j = 0; j < len; ++j) {
-			var otherIdx = Math.round(Math.random() * len);
+			var otherIdx = Math.floor(Math.random() * len);
 			var elem1 = missingWordsElement.children[j];
 			var elem2 = missingWordsElement.children[otherIdx];
 			missingWordsElement.insertBefore(elem2, elem1);
@@ -163,5 +167,24 @@ function practiceElementOnClick() {
 	showMissingWords();
 }
 
+function exerciseInputOnKeyDown(elementId) {
+	var id = elementId.replace(/^exercise/, "");
+	var inputElement = document.getElementById(elementId);
+	var word = words[id];
+	var text = inputElement.value;
+	if (word === text) {
+		foundWord(id);
+	} else {
+		notFoundWord(id);
+	}
+}
+
+function foundWord(id) {
+	missingWordElements[id].classList.add("missingWordFound");
+}
+
+function notFoundWord(id) {
+	missingWordElements[id].classList.remove("missingWordFound");
+}
 })();
 
