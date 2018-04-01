@@ -82,6 +82,22 @@ function getQueryParameterByName(name, url) {
 	return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function getUrlWithoutQuery(url) {
+	return window.location.href.split('?')[0];
+}
+
+function b64EncodeUnicode(str) {
+	    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+		            return String.fromCharCode(parseInt(p1, 16))
+		        }))
+}
+
+function b64DecodeUnicode(str) {
+	    return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+		            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+		        }).join(''))
+}
+
 function removeAllChildrenOf(element) {
 	while (element.firstChild) {
 		    element.removeChild(element.firstChild);
@@ -173,6 +189,13 @@ function createExerciseInput(id, word) {
 	}
 }
 
+function createPracticeUrl() {
+	var baseUrl = getUrlWithoutQuery();
+	var wordList = words.join("|");
+	var missingList = hidden.map(h => "" + h).join("|");
+	return baseUrl + "?words=" + b64EncodeUnicode (wordList) + "&missing=" + b64EncodeUnicode(missingList);
+}
+
 function showExercise() {
 	actualExerciseLineElement = null;
 	found = new Array(words.length).fill(true);
@@ -188,6 +211,8 @@ function showExercise() {
 			createExerciseWord(index, word);
 		}
 	});
+	var practiceUrl = createPracticeUrl();
+	showMessage("<a href='" + practiceUrl + "'>Link to this exercise</a>");
 	showPracticeStep();
 }
 
