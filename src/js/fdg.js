@@ -34,6 +34,7 @@ function createChoosableWord(id, word) {
 	var wordElement = document.createElement("label");
 	wordElement.innerHTML = word;
 	wordElement.id = id;
+	wordElement.classList.add("choosableWord");
 	actualLineElement.appendChild(wordElement);
 }
 

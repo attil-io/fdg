@@ -4,11 +4,20 @@
 		<script type="text/javascript">
 			var currentUrl = window.location.href;
 			var isLocal = currentUrl.startsWith("file://");
+
 			var scriptUrl = isLocal ? "src/js/fdg.js" : "https://rawgit.com/attil-io/fdg/master/src/js/fdg.js";
-			console.log("isLocal = ", isLocal, " scriptUrl = ", scriptUrl);
-			var imported = document.createElement('script');
-			imported.src = scriptUrl;
-			document.head.appendChild(imported);
+			var cssUrl = isLocal ? "src/css/fdg.css" : "https://rawgit.com/attil-io/fdg/master/src/css/fdg.css";
+			console.log("isLocal = ", isLocal, " scriptUrl = ", scriptUrl, " cssUrl = ", cssUrl);
+
+			var jsNode = document.createElement("script");
+			jsNode.src = scriptUrl;
+			document.head.appendChild(jsNode);
+
+			var cssNode = document.createElement("link");
+                        cssNode.type = "text/css";
+			cssNode.rel = "stylesheet";
+			cssNode.href = cssUrl; 
+			document.head.appendChild(cssNode);
 		</script>
 	</head>
 	<body>
