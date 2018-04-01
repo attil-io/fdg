@@ -89,7 +89,6 @@ function wordElementOnClick(elementId) {
 var actualExerciseLineElement;
 function clearExercise() {
 	removeAllChildrenOf(showWordsElement);
-	removeAllChildrenOf(missingWordsElement);
 	actualExerciseLineElement = null;
 }
 
@@ -128,8 +127,26 @@ function showExercise() {
 	});
 }
 
+function createMissingWord(id, word) {
+	var wordElement = document.createElement("label");
+	wordElement.innerHTML = word;
+	wordElement.id = "missing" + id;
+	wordElement.classList.add("missingWord");
+	missingWordsElement.appendChild(wordElement);
+}
+
+function showMissingWords() {
+	removeAllChildrenOf(missingWordsElement);
+	words.forEach(function(word, index) {
+		if (hidden[index]){
+			createMissingWord(index, word);
+		} 
+	});
+}
+
 function practiceElementOnClick() {
 	showExercise();
+	showMissingWords();
 }
 
 })();
