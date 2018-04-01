@@ -274,7 +274,7 @@ function exerciseInputOnKeyDown(elementId) {
 		notFoundWord(id);
 	}
 	if (checkAllFound()) {
-		addMessage("Well done!");
+		addMessage("<span class='well-done-message'>Well done!</span>");
 	}
 }
 

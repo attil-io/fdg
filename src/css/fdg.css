@@ -3,6 +3,11 @@
 	margin-bottom: 30px;
 }
 
+.well-done-message {
+	font-size: large;
+	color: red;
+}
+
 .choosableWord {
 	margin-left: 5px;
 }
