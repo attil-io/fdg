@@ -62,10 +62,13 @@ function showPracticeStep() {
 }
 
 function startUp() {
+	hideAllSteps();
+	showMessage("Loading, please wait...");
 	var textParameter = getQueryParameterByName("text", window.location.href);
 	var missingWordsParameter = getQueryParameterByName("missing", window.location.href);
 	console.log("textParameter=", textParameter, "missingWordsParameter=", missingWordsParameter);
 	if (!textParameter || !missingWordsParameter) {
+		showMessage("Please, enter your text");
 		showInputStep();
 	} else {
 		words = b64DecodeUnicode(textParameter).split('|');
