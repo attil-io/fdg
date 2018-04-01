@@ -58,11 +58,28 @@ function showPracticeStep() {
 }
 
 function startUp() {
-	showInputStep();
+	var textParameter = getQueryParameterByName("text", window.location.href);
+	var missingWordsParameter = getQueryParameterByName("missing", window.location.href);
+	console.log("textParameter=", textParameter, "missingWordsParameter=", missingWordsParameter);
+	if (!textParameter || !missingWordsParameter) {
+		showInputStep();
+	} else {
+		showPracticeStep();
+		console.log("starting with the exercise!");
+	}
 }
 
 function splitTextToWords(text) {
 	return text.replace(/\s\s+/g, ' ').match(/[a-zA-Z\u00E0-\u00FC\u00DF]+|\s+|[^\sa-zA-Z\u00E0-\u00FC\u00DF]+/g).filter(w => (w != ' ' && w != '\t'));
+}
+
+function getQueryParameterByName(name, url) {
+	var cleanName = name.replace(/[\[\]]/g, "\\$&");
+	var regex = new RegExp("[?&]" + cleanName + "(=([^&#]*)|&|#|$)");
+	var results = regex.exec(url);
+	if (!results) return null;
+	if (!results[2]) return '';
+	return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 function removeAllChildrenOf(element) {
