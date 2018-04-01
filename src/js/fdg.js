@@ -64,8 +64,10 @@ function startUp() {
 	if (!textParameter || !missingWordsParameter) {
 		showInputStep();
 	} else {
+		words = b64DecodeUnicode(textParameter).split('|');
+		hidden = b64DecodeUnicode(missingWordsParameter).split('|').map(b => ("true" === b ? true : false));
 		showPracticeStep();
-		console.log("starting with the exercise!");
+		initPractice();
 	}
 }
 
@@ -193,7 +195,7 @@ function createPracticeUrl() {
 	var baseUrl = getUrlWithoutQuery();
 	var wordList = words.join("|");
 	var missingList = hidden.map(h => "" + h).join("|");
-	return baseUrl + "?words=" + b64EncodeUnicode (wordList) + "&missing=" + b64EncodeUnicode(missingList);
+	return baseUrl + "?text=" + b64EncodeUnicode (wordList) + "&missing=" + b64EncodeUnicode(missingList);
 }
 
 function showExercise() {
@@ -244,9 +246,13 @@ function showMissingWords() {
 	}
 }
 
-function practiceElementOnClick() {
+function initPractice() {
 	showExercise();
 	showMissingWords();
+}
+
+function practiceElementOnClick() {
+	initPractice();
 }
 
 function exerciseInputOnKeyDown(elementId) {
