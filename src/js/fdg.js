@@ -3,6 +3,8 @@
 var bodyElement = document.getElementsByTagName("body")[0]; 
 var inputTextElement, saveInputElement, chooseWordsElement;
 
+var words = [];
+var hidden = [];
 
 bodyElement.onload = function () {
 	console.log("Initializing fdg.js");
@@ -42,7 +44,9 @@ function saveInputOnClick() {
 	clearChoosableWords();
 	newLineForChoosableWords();
 	var text = inputTextElement.value;
-	var words = splitTextToWords(text);
+	words = splitTextToWords(text);
+	hidden = new Array(words.length).fill(false);
+	console.log(hidden);
 	words.forEach(function(word, index) {
 		if ("\n" === word) {
 			newLineForChoosableWords();
