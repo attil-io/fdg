@@ -14,7 +14,7 @@ bodyElement.onload = function () {
 }
 
 function splitTextToWords(text) {
-	return text.replace(/\s\s+/g, ' ').match(/\w+|\s+|[^\s\w]+/g).filter(w => (w != ' ' && w != '\t' && w != '\n'));
+	return text.replace(/\s\s+/g, ' ').match(/[a-zA-Z\u00E0-\u00FC\u00DF]+|\s+|[^\sa-zA-Z\u00E0-\u00FC\u00DF]+/g).filter(w => (w != ' ' && w != '\t' && w != '\n'));
 }
 
 function clearChoosableWords() {
