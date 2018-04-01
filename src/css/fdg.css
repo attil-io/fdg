@@ -1,3 +1,8 @@
+.message {
+	border-style: solid;
+	margin-bottom: 30px;
+}
+
 .choosableWord {
 	margin-left: 5px;
 }

@@ -153,6 +153,7 @@ function saveInputOnClick() {
 			createChoosableWord(index, word);
 		}
 	});
+	showMessage("Please click on the words which should be hidden");
 	showChooseStep();
 }
 
