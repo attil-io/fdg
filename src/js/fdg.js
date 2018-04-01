@@ -4,8 +4,10 @@ var bodyElement = document.getElementsByTagName("body")[0];
 var inputTextElement, saveInputElement, chooseWordsElement, practiceElement, showWordsElement, missingWordsElement;
 
 var words = [];
-var wordElements = [];
 var hidden = [];
+
+var wordElements = [];
+var missingWordElements = [];
 
 var actualLineElement;
 var actualExerciseLineElement;
@@ -134,15 +136,26 @@ function createMissingWord(id, word) {
 	wordElement.id = "missing" + id;
 	wordElement.classList.add("missingWord");
 	missingWordsElement.appendChild(wordElement);
+	missingWordElements[id] = wordElement;
 }
 
 function showMissingWords() {
 	removeAllChildrenOf(missingWordsElement);
+	missingWordElements = [];
 	words.forEach(function(word, index) {
 		if (hidden[index]){
 			createMissingWord(index, word);
 		} 
 	});
+	var len = missingWordsElement.children.length;
+	for (var i = 0; i < len * 10; ++i) {
+		for (var j = 0; j < len; ++j) {
+			var otherIdx = Math.round(Math.random() * len);
+			var elem1 = missingWordsElement.children[j];
+			var elem2 = missingWordsElement.children[otherIdx];
+			missingWordsElement.insertBefore(elem2, elem1);
+		}
+	}
 }
 
 function practiceElementOnClick() {
