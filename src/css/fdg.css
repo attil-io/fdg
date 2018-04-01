@@ -1,3 +1,7 @@
 .choosableWord {
-	padding-left: 5px;
+	margin-left: 5px;
+}
+
+.chosenWord {
+	background-color: #eeee00;
 }

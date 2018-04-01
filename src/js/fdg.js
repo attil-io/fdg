@@ -4,6 +4,7 @@ var bodyElement = document.getElementsByTagName("body")[0];
 var inputTextElement, saveInputElement, chooseWordsElement;
 
 var words = [];
+var wordElements = [];
 var hidden = [];
 
 bodyElement.onload = function () {
@@ -25,6 +26,9 @@ function clearChoosableWords() {
 		    chooseWordsElement.removeChild(chooseWordsElement.firstChild);
 	}
 	actualLineElement = null;
+	words = [];
+	wordElements = [];
+	hidden = [];
 }
 
 function newLineForChoosableWords() {
@@ -37,7 +41,11 @@ function createChoosableWord(id, word) {
 	wordElement.innerHTML = word;
 	wordElement.id = id;
 	wordElement.classList.add("choosableWord");
+	wordElement.onclick = function () {
+		wordElementOnClick(id);
+	}
 	actualLineElement.appendChild(wordElement);
+	wordElements[id] = wordElement;
 }
 
 function saveInputOnClick() {
@@ -46,7 +54,7 @@ function saveInputOnClick() {
 	var text = inputTextElement.value;
 	words = splitTextToWords(text);
 	hidden = new Array(words.length).fill(false);
-	console.log(hidden);
+	wordElements = new Array(words.length).fill(null);
 	words.forEach(function(word, index) {
 		if ("\n" === word) {
 			newLineForChoosableWords();
@@ -54,6 +62,18 @@ function saveInputOnClick() {
 			createChoosableWord(index, word);
 		}
 	});
+}
+
+function wordElementOnClick(id) {
+	var wordElement = wordElements[id];
+	var wasHidden = hidden[id];
+	console.log("Clicked id:", id);
+	if (wasHidden) {
+		wordElement.classList.remove("chosenWord");
+	} else {
+		wordElement.classList.add("chosenWord");
+	}
+	hidden[id] = !wasHidden;
 }
 })();
 
